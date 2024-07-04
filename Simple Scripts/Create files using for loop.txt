@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Create number of files based on input
+
+echo "Enter number of files to be created"
+read num
+
+mkdir -p /var/tmp
+
+for ((i = 1; i<= $num; i++))
+do
+ touch /var/tmp/$i
+done

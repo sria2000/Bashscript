@@ -1,0 +1,442 @@
+!!!SHELL SCRIPT USAGES!!!
+#!/bin/bash - Shebang
+
+** echo - stdout
+** single quote - literal string
+   double quote - variable expansion
+** type - shell builtin or command
+** help  / man
+** Shell variables
+hostname/random/uid
+
+
+1) whats your current shell
+echo $0 to check current shell
+
+2) How to change shell - chsh
+
+3) Multiline comment
+<< Multi-Line
+This is comment1
+This is comment2
+Multi-Line
+
+# comments
+
+4) How to make var unchangable or readonly
+
+readonly variable_name=value
+
+5) Usage of Variable
+
+Command Sub
+VAR=$(command)
+VAR=`command` ( Old style)
+echo "Output of command: $(command)"
+
+
+##Variable VAR="value"
+#!/bin/bash
+Variable="value"
+$Variable
+${Variable}
+Variable=$(command)
+if
+ then command
+elif
+ then command
+fi
+
+6) condition check
+
+Condition
+ [ -e /etc/passwd ]
+-d dir
+-e file exists
+-f file exists
+-r readable file
+-s not empty
+-w writable
+-x executable
+-z empty
+-n not empty
+
+STRING1=STRING2 equal
+STRING1!=STRING2 not eq
+
+a -eq b equal
+a -ne b not =
+a -lt b lessthan
+a -le b lessthan eq
+a -gt b greater than
+a -ge b g eq
+
+0 - true
+1 - false 
+
+exit 1
+echo ${?) or $? - shows exit status of recent command
+
+if [[ "${UID}" -ne 0 ]]
+then
+ echo 'Please run as root' > &2
+ exit 2
+fi
+
+****CONDITIONS****
+
+If statement
+
+if [[ commands ]]
+then 
+ commands
+else
+ commands
+fi
+
+
+$ more a1.sh
+#!/bin/bash
+
+L="bash"
+if [ "$L" = "bash" ]
+then
+ echo "Yaay"
+fi
+
+else statemnt
+
+$ more a1.sh
+#!/bin/bash
+
+L="ash"
+if [ "$L" = "bash" ]
+then
+ echo "Yaay"
+else
+ echo "Naah"
+fi
+
+#!/bin/bash
+
+L="ash"
+if [ "$L" = "bash" ]
+then
+ echo "Yaay"
+elif [ "$L" = "ash" ]
+then
+ echo " Ash"
+else
+ echo "Naah"
+fi
+
+
+7) LOOPS
+(a) ------FOR LOOP ----
+
+For VARIABLE in LIST
+do
+ commands
+done
+
+
+$ more lo.sh
+#!/bin/bash
+b="Yellow pista"
+for color in red green blue
+do
+ echo "color: $color"
+done
+
+for i in $b
+do
+ echo "CO: $b"
+done
+
+(b) While loop
+while true
+do
+ -
+ -
+done
+
+while [[ commands ]]
+do 
+ commands
+done
+
+(c) until loop
+#!/bin/bash
+
+counter=1
+
+until [ $counter -gt 5 ]
+do
+    echo "Counter: $counter"
+    (( counter++ ))
+done
+
+echo "Loop finished."
+
+8) 
+Positional parametrs
+Arguments vs arameters
+
+$script.sh par1 par2 par3
+$0 - Stores script name
+$1 - First argument
+$2 - Second argument
+$3 - par3
+$? - exit status of last executed
+$@ - Consider all arguments as separate entry
+$# - Number of positional parameters passed to script
+$* - Considers all arguments as single entry
+$$ - Gives process ID
+
+--------------------------------------------------------------------
+Eg:
+[vagrant@testbox01 vagrant]$ cat test.sh
+#!/bin/bash
+for i in "$@"
+do
+ echo $i
+done
+[vagrant@testbox01 vagrant]$
+[vagrant@testbox01 vagrant]$ ./test.sh a b c
+a
+b
+c
+
+----------------------------------
+vagrant@testbox01 vagrant]$ cat test.sh
+#!/bin/bash
+for i in "$*"
+do
+ echo $i
+done
+[vagrant@testbox01 vagrant]$
+[vagrant@testbox01 vagrant]$ ./test.sh a b c
+a b c
+----------------------------------
+
+$ cat c.sh
+#!/bin/bash
+cat $1
+tar cvf aa.tar $2
+
+read -p 
+---------------------------------
+9) 
+Exit status/return code
+0 - success
+>0 - error
+&& and
+|| - or
+mkdir a && cp -pr a b
+cp a b || cp a c
+
+10) 
+******FUNCTION***************
+
+function fun-name() {
+ code
+}
+fun-name() {
+}
+
+$ more a.sh
+#!/bin/bash
+function hello() {
+ echo "dude"
+ pop
+}
+function pop() {
+ echo "date is $(date)"
+}
+hello
+
+
+
+$ more a.sh
+#!/bin/bash
+function hello() {
+ for i in $@
+ do
+ echo $i
+ done
+}
+hello a b c d
+
+
+local LOCAL_VAR=1
+only inside function
+
+
+11)
+wildcards ------------
+
+globbing
+* or ?
+[] - character class
+ca[nt]*
+[!aeiou]*
+[a-g]*
+[3-6]*
+[[:alpha:]]
+[[:alnum:}}
+digit
+lower
+space
+upper
+*\? - file that end with ?
+
+
+
+12) case----
+
+case "$VAR in
+ patten1
+ ;;
+ pattenn
+ ;;
+esac
+
+
+13) find *.log and to search for error in files
+
+find / -type f -name "*.log" -exec grep -H "error" {} \;
+
+NOW TO SEARCH IN 100 servers
+#!/bin/bash
+
+# File containing the list of server addresses (one per line)
+SERVER_LIST="servers.txt"
+
+# Path to the log files on each server
+LOG_PATH="/var/log"
+
+# Word to search for
+SEARCH_WORD="error"
+
+# Check if the server list file exists
+if [ ! -f "$SERVER_LIST" ]; then
+    echo "Server list file not found!"
+    exit 1
+fi
+
+# Loop through each server and execute the search command
+while IFS= read -r server; do
+    echo "Connecting to $server..."
+    
+    # SSH into the server and search for the word in .log files
+    ssh "$server" "find $LOG_PATH -type f -name '*.log' -exec grep -H '$SEARCH_WORD' {} \;" >> "error_report_$server.txt"
+    
+    if [ $? -eq 0 ]; then
+        echo "Search complete for $server. Results saved in error_report_$server.txt"
+    else
+        echo "Failed to connect to $server or no .log files found."
+    fi
+
+done < "$SERVER_LIST"
+
+
+
+
+14) Redirections
+IO redirection -pipes
+Send STDOUT as STDIN
+echo ${PASSWORD} | passwd -- stdin ${NAME}
+
+String manipulation & data muning with pipes
+
+echo '!"£$%^' | fold -w1 | shuf | head -c1
+
+
+File IO Redirection
+
+command > /path/to/file - redirects o/p
+command >> /path/to/file - appends
+command < /path/to/file - Takes from file
+command 2> /path/to/file -send standard error
+command &> /path/to/file - send both o/p and standard error to fie
+
+IO Redirection
+
+COMMAND |& COMMAND
+COMMAND > &2 - Send standard error
+COMMAND > /dev/null
+
+
+(a) echo "Hello" > out.txt
+(b) echo "Hi" >> out.txt ( append)
+(c) Input Redirectio
+## Script will read each line from input.txt
+
+
+ while read line; do
+   echo $line
+ done < input.txt
+(d) error redirection
+ls file 2> error.log
+
+(e) Redirect stdout & stderror
+ls file_exist file_noexist &> combined.log
+
+(f) Redirect stdout and stderr to different files:
+
+ls existing_file non_existing_file > output.log 2> error.log
+
+(g) Discard errors
+command > /dev/null ( Discard o/p)
+command 2> /dev/null ( Discard stderror)
+command &> /dev/null ( Discard stdout & stderror)
+
+(i) Heredoc for multi-line input:
+
+cat <<EOF > heredoc.txt
+This is line 1
+This is line 2
+This is line 3
+EOF
+
+(j) Combine stdout & stderror into a pipe
+command 2>&1 | tee output_and_error.log
+
+(k) Using file descriptors for redirection:
+exec 3>output.txt  # Open file descriptor 3 for writing to output.txt
+echo "Writing to descriptor 3" >&3
+exec 3>&-  # Close file descriptor 3
+
+(l) Redirect & append both stdour & stderror to a file
+>>log.txt2>&1
+
+
+(15) Root running?
+
+$UID=0
+
+(16) Debug script
+
+set -x
+{ Define in beginning }
+
+(17) Total shells in OS
+cat /etc/shells
+
+(18) command line conventions
+id -u -n
+id -un
+id -nu
+id --user --name
+
+(19) obtain standard input
+
+read -p "A prompt: " VARIABLE
+
+(20)
+Generate Random da
+
+
+echo ${RANDOM}
+date +%s%N | sha256sum | head -c8
+

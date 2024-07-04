@@ -1,0 +1,39 @@
+#!/bin/bash
+##Collect system info using functions
+
+system_health() {
+ echo " Hostname"
+  uname -n
+ echo
+ echo "IP Address"
+ ifconfig -a
+ echo
+ echo "Disk usage"
+  df -h
+ echo
+ echo "Free mem usage"
+ free -m
+ echo
+}
+
+system_health &> /var/tmp/COLLECTION/file_`date +%d_%m_%Y_%H_%M_%S`.txt
+## Delete any files over 5 days
+rm -rf `ls -t /var/tmp/COLLECTION/file*.txt | awk 'NR>5'`
+
+
+
+##OUTPUT
+root@ubuntu-xenial:/scripts# ./pass.sh
+ Usage Of Random
+26888
+ Usage of 3 Random
+10441940816926
+Usage of date with Random nanoseconds
+1720010276814284635
+Usage with sha256
+db49509c231f9f3e834f8ecf2a32ab18
+Usage with Random with date with sha256
+3cd926deb86522724f8feb6e7904c93b1875d38f1da06fe6
+ With Special Characters
+3cd926deb86522724f8feb6e7904c93b1875d38f1da06fe6"
+root@ubuntu-xenial:/scripts#

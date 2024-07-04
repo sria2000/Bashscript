@@ -1,0 +1,24 @@
+#!/bin/bash
+# Print first 10 Numbers using While loop
+
+i=0
+while [ $i -le 10 ]
+do
+ echo $i
+((i++))
+done
+
+
+OUTPUT
+root@ubuntu-xenial:/scripts# ./div.sh
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10

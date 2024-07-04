@@ -1,0 +1,23 @@
+#!/bin/bash
+# Write a script in which we must a function named as sum, which will be triggered to calculate the sum of 2 numbers provided by user at runtime ?
+
+function sum() {
+  echo "Enter First Number: "
+  read first
+  echo "Enter Second Number: "
+  read second
+  TOT=$((first + second))
+  echo $TOT
+
+}
+
+sum
+exit 1
+
+##OUTPUT
+root@ubuntu-xenial:/scripts# ./sum.sh
+Enter First Number:
+4
+Enter Second Number:
+66
+70

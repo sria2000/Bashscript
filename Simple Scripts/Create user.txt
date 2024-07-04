@@ -1,0 +1,70 @@
+# This script is to create a user and set password
+#!/bin/bash
+
+# Check if you are running as root
+if [[ $UID -ne 0 ]]
+ then
+  echo "Please Run this as root"
+  exit 1
+fi
+
+echo "Enter the userID of the User "
+read user
+
+echo "Enter Full Name of the user "
+read full
+
+echo "Password of the user "
+read pass
+
+## check if the user exists
+
+grep -q "^${user}:" /etc/passwd
+
+if [[ "$?" -ne 0 ]]
+then
+  # Create user
+  useradd -c "${full}" -m "${user}"
+ if [[ "$?" -ne 0 ]]
+ then
+ echo "Cannot create user "
+ exit 1
+fi
+else
+ echo "User already exists"
+ exit 1
+fi
+
+##Create password
+
+echo "${user}:${pass}" | chpasswd
+
+if [ "$?" != 0 ]
+then
+ echo " Cannot set passswd for  user "
+ exit 1
+fi
+
+## Force the change of password in first login
+passwd -e ${user} 1>&2
+
+echo "User ${user} created successfully on ${HOSTNAME} with password provided"
+exit 0
+
+
+
+OUTPUT
+root@ubuntu-xenial:/scripts# ./adduser.sh
+Enter the userID of the User
+SriramV
+Enter Full Name of the user
+Sriram Varadharajan
+Password of the user
+sri
+useradd: warning: the home directory already exists.
+Not copying any file from skel directory into it.
+passwd: password expiry information changed.
+User SriramV created successfully on ubuntu-xenial with password provided
+root@ubuntu-xenial:/scripts# id SriramV
+uid=1016(SriramV) gid=1016(SriramV) groups=1016(SriramV)
+root@ubuntu-xenial:/scripts#

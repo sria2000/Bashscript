@@ -1,0 +1,61 @@
+#!/bin/bash
+# Write a script to add/mul/div/sub using functions
+
+  echo "Enter First Number: "
+  read first
+  echo "Enter Second Number: "
+  read second
+
+
+function sum() {
+  TOT=$((first + second))
+   echo "Addition of $first and $second is $TOT"
+
+}
+
+function diff() {
+  TOT_DIFF=$((first - second))
+   echo "Difference of $first and $second is $TOT_DIFF"
+}
+
+function mult() {
+  TOT_MUL=$((first * second))
+   echo "Difference of $first and $second is $TOT_MUL"
+}
+
+function div() {
+ if [ $second -eq 0 ]; then
+   echo "Division by 0 not allowed"
+  else
+    DIV=$((first / second))
+  echo "$first divided by $second is $DIV"
+ fi
+}
+sum
+echo
+diff
+echo
+mult
+echo
+div
+echo
+
+exit 1
+
+
+
+###output
+
+root@ubuntu-xenial:/scripts# ./sum.sh
+Enter First Number:
+100
+Enter Second Number:
+2
+Addition of 100 and 2 is 102
+
+Difference of 100 and 2 is 98
+
+Difference of 100 and 2 is 200
+
+100 divided by 2 is 50
+

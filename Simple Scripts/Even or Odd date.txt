@@ -1,0 +1,17 @@
+#!/bin/bash
+# Check if the date is Even or Odd
+
+DATE=`date +%d`
+echo $DATE
+if [[ $((DATE %2 )) -eq 0 ]]
+then
+ echo "Date $DATE is even"
+else
+ echo "Date $DATE is odd"
+fi
+
+
+O/P
+root@ubuntu-xenial:/scripts# ./even.sh
+03
+Date 03 is odd

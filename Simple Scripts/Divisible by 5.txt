@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Check if this Number is divisible by 5
+
+echo "Enter a Number"
+read num
+
+if [[ $((num % 5)) == 0 ]]
+then
+ echo "Number $num is divisible by 5"
+else
+ echo "Number $num is NOT divisible by 5"
+fi

@@ -1,0 +1,27 @@
+#! /bin/bash
+# Check if the Number is divisible by 3 5 or 7
+
+echo "Enter a Number "
+read NUM
+
+if [[ $((NUM % 3)) == 0 || $((NUM % 5)) == 0 || $((NUM % 7)) == 0 ]]
+then
+ echo "$NUM is divisble by 3 or 5 or 7"
+else
+ echo "$NUM Is NOT divisible by 3 5 or 7"
+fi
+
+
+##OUTPUT
+root@ubuntu-xenial:/scripts# ./divide.sh
+Enter a Number
+2
+2 Is NOT divisible by 3 5 or 7
+root@ubuntu-xenial:/scripts# ./divide.sh
+Enter a Number
+20
+20 is divisble by 3 or 5 or 7
+root@ubuntu-xenial:/scripts# ./divide.sh
+Enter a Number
+21
+21 is divisble by 3 or 5 or 7

@@ -1,0 +1,44 @@
+#!/bin/bash
+## This script explains the usage of Shifts
+
+## Use 3 parameters
+echo "Parameter 1: ${1}"
+echo "Parameter 2: ${2}"
+echo "Parameter 3: ${3}"
+echo
+echo
+
+# Now use While loop to go and pharse each parameters
+while [[ "${#}" -gt 0 ]]
+do
+ echo "Number of Parameters: ${#}"
+ echo "First Parameter is ${1}"
+ echo "Second Parameter is ${2}"
+ echo "Third Parameter is ${3}"
+ echo
+ shift
+done
+
+
+## SAMPLE OUTPUT
+
+root@ubuntu-xenial:/scripts# ./shift.sh  1 2 3
+Parameter 1: 1
+Parameter 2: 2
+Parameter 3: 3
+
+
+Number of Parameters: 3
+First Parameter is 1
+Second Parameter is 2
+Third Parameter is 3
+
+Number of Parameters: 2
+First Parameter is 2
+Second Parameter is 3
+Third Parameter is
+
+Number of Parameters: 1
+First Parameter is 3
+Second Parameter is
+Third Parameter is
