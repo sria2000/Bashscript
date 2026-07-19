@@ -1,0 +1,47 @@
+## Script will copy /var/log/messages from 10 servers & store them as server_var_log_messages. Finally tars them. The server names are in servers.txt file 
+#!/bin/bash
+
+# File containing the list of servers
+SERVER_LIST="servers.txt"
+
+# Username for SSH
+USER="root"
+
+# Directory to store collected logs
+OUTPUT_DIR="SERVER_LOGS"
+
+# Archive name
+ARCHIVE_NAME="SERVERS.tar.gz"
+
+# Create output directory
+mkdir -p "$OUTPUT_DIR"
+
+echo "Collecting logs from servers..."
+echo "--------------------------------"
+
+while read -r SERVER
+do
+    # Skip blank lines
+    [[ -z "$SERVER" ]] && continue
+
+    echo "Connecting to $SERVER..."
+
+    scp ${USER}@${SERVER}:/var/log/messages \
+        ${OUTPUT_DIR}/${SERVER}_var_log_messages
+
+    if [ $? -eq 0 ]; then
+        echo "✓ Successfully copied from $SERVER"
+    else
+        echo "✗ Failed to copy from $SERVER"
+    fi
+
+done < "$SERVER_LIST"
+
+echo
+echo "Creating archive..."
+
+tar -czvf "$ARCHIVE_NAME" "$OUTPUT_DIR"
+
+echo
+echo "Archive created successfully:"
+echo "$ARCHIVE_NAME"
